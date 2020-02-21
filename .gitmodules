@@ -1,3 +1,3 @@
 [submodule "Kouky"]
-	path = Kouky
+	path = src/Kouky
 	url = git@github.com:derkaczda/Kouky.git
