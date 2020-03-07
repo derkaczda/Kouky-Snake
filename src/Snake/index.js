@@ -4,6 +4,14 @@ import Vector3 from '../Kouky/math/Vector3';
 
 export default class Snake extends React.Component
 {
+    constructor()
+    {
+        super();
+        this.state = {
+            xValue : 0
+        }
+    }
+
     initKouky = () =>
     {
         this.kouky = new Kouky();
@@ -26,6 +34,7 @@ export default class Snake extends React.Component
                                 this.clearColor.y() + this.colorValue,
                                 this.clearColor.z() + this.colorValue);
             this.clearColor = this.color;
+            this.setState({ xValue: this.clearColor.x() });
             this.kouky.setClearColorVec3(this.clearColor);
             this.kouky.clearColor();
             this.gameLoop(); 
@@ -42,11 +51,18 @@ export default class Snake extends React.Component
 
     render()
     {
-        return <canvas
-            id = "kouky_canvas"
-            width = {this.props.width}
-            height = {this.props.height}
-            style = {{border: '1px solid black'}}>
-        </canvas>
+        return (
+        <div>
+            <div>
+                <p>{this.state.xValue}</p>
+            </div>
+            <canvas
+                id = "kouky_canvas"
+                width = {this.props.width}
+                height = {this.props.height}
+                style = {{border: '1px solid black'}}>
+            </canvas>
+        </div>
+        );
     }
 }
