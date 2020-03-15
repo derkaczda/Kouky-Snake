@@ -26,9 +26,9 @@ export default class Snake extends React.Component
             if(!this.running)
                 return;
             
+            this.gameObjects.forEach(gameObject => { gameObject.update(); });
             this.kouky.clearColor();
-
-            this.player.render();
+            this.gameObjects.forEach(gameObject => { gameObject.render(); })
 
             this.gameLoop(); 
         });
@@ -39,8 +39,13 @@ export default class Snake extends React.Component
         this.initKouky();
 
         this.running = true;
+        this.gameObjects = [];
         
         this.player = new Player();
+        this.player2 = new Player();
+        this.player2.setPosition(new Vector3(1.0, 0.0, 0.0));
+        this.gameObjects.push(this.player);
+        this.gameObjects.push(this.player2);
         this.gameLoop();
     }
 

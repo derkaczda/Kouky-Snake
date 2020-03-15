@@ -21,9 +21,16 @@ export default class Player
         this.renderer.addInstance(instance, 'square');
     }
 
+    setPosition = (position) => this.position = position;
+
+    update = () =>
+    {
+        this.instance.setPosition(this.position);
+        this.instance.updateRotation(1, 1, 1);
+    }
+
     render = () =>
     {
-        this.instance.updateRotation(1, 1, 1);
         this.renderer.render();
     }
 }
