@@ -1,6 +1,8 @@
 import React from 'react';
 import Kouky from '../Kouky';
 import Vector3 from '../Kouky/math/Vector3';
+import ModelRenderer from '../Kouky/Render/ModelRenderer';
+import ModelType from '../Kouky/Models/ModelType';
 
 export default class Snake extends React.Component
 {
@@ -37,6 +39,9 @@ export default class Snake extends React.Component
             this.setState({ xValue: this.clearColor.x() });
             this.kouky.setClearColorVec3(this.clearColor);
             this.kouky.clearColor();
+
+            this.modelRenderer.render();
+
             this.gameLoop(); 
         });
     }
@@ -46,6 +51,27 @@ export default class Snake extends React.Component
         this.initKouky();
 
         this.running = true;
+
+        const vertices = 
+        [
+            0.0, 0.5, 0.0,
+            -0.5, -0.5, 0.0,
+            0.5, -0.5, 0.0
+        ];
+    
+        const indices =
+        [
+            0, 1, 2
+        ];
+
+        this.vertices = vertices;
+        this.indices = indices;
+
+        const modelRenderer = new ModelRenderer();
+        modelRenderer.registerNewModel(new ModelType(this.vertices, this.indices), 'triangle');
+        modelRenderer.addInstance('instance1', 'triangle');
+        this.modelRenderer = modelRenderer;
+
         this.gameLoop();
     }
 
