@@ -2,7 +2,7 @@ import React from 'react';
 import Kouky from '../Kouky';
 import Vector3 from '../Kouky/math/Vector3';
 import ModelRenderer from '../Kouky/Render/ModelRenderer';
-import ModelType from '../Kouky/Models/ModelType';
+import ModelFactory from '../Kouky/Utils/ModelFactory'
 
 export default class Snake extends React.Component
 {
@@ -51,24 +51,9 @@ export default class Snake extends React.Component
         this.initKouky();
 
         this.running = true;
-
-        const vertices = 
-        [
-            0.0, 0.5, 0.0,
-            -0.5, -0.5, 0.0,
-            0.5, -0.5, 0.0
-        ];
-    
-        const indices =
-        [
-            0, 1, 2
-        ];
-
-        this.vertices = vertices;
-        this.indices = indices;
-
+        
         const modelRenderer = new ModelRenderer();
-        modelRenderer.registerNewModel(new ModelType(this.vertices, this.indices), 'triangle');
+        modelRenderer.registerNewModel(ModelFactory.createSquareModel(), 'triangle');
         modelRenderer.addInstance('instance1', 'triangle');
         this.modelRenderer = modelRenderer;
 
