@@ -1,7 +1,8 @@
 namespace Snake {
     export class Snake {
-        public constructor() {
-            let engine = new Kouky.KoukyEngine();
+        public constructor(debug: boolean = false) {
+
+            let engine = new Kouky.KoukyEngine(undefined, "root", debug);
         }
     }
 }

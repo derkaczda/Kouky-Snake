@@ -1,5 +1,6 @@
 var snake: Snake.Snake;
 
 window.onload = function () {
-    snake = new Snake.Snake();
+    let DEBUG = true;
+    snake = new Snake.Snake(DEBUG);
 }
