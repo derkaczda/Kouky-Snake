@@ -1,10 +1,18 @@
 namespace Snake {
     export class Snake {
-        public constructor(debug: boolean = false) {
+        private _engine: Kouky.KoukyEngine;
 
-            let engine = new Kouky.KoukyEngine(undefined, "root", debug);
-            engine.start();
-            engine.loop();
+        public constructor(debug: boolean = false) {
+            this._engine = new Kouky.KoukyEngine(undefined, "root", debug);
+        }
+
+        public start(): void {
+            this._engine.start();
+            this._engine.fullscreen();
+        }
+
+        public loop(): void {
+            this._engine.loop();
         }
     }
 }
