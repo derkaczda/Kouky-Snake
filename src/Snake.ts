@@ -9,6 +9,7 @@ namespace Snake {
         public start(): void {
             this._engine.start();
             this._engine.fullscreen();
+            this._engine.display.clearColor = new Kouky.Color(0.27, 0.27, 0.27);
         }
 
         public loop(): void {
