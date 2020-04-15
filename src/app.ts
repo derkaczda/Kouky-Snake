@@ -6,3 +6,7 @@ window.onload = function () {
     snake.start();
     snake.loop();
 }
+
+window.onresize = function() {
+    snake.resize();
+}
