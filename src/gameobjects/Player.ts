@@ -7,6 +7,8 @@ namespace Snake {
 
         public transform: Kouky.Transform;
 
+        public get width(): number { return this._geometry.width; }
+        public get height(): number { return this._geometry.height; }
 
         public start(): void {
             this._geometry = new SquareGeometry(20, 20);

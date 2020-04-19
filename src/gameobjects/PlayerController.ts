@@ -3,6 +3,8 @@ namespace Snake {
         private _player: PlayerObject;
         private _stepSpeed: number = 5;
         private _movementDirection: Kouky.Vector3 = Kouky.Vector3.right();
+        private _frameCount: number = 0;
+        private _thresholdFrameCount: number;
 
         public constructor(player: PlayerObject) {
             this._player = player;
@@ -26,9 +28,14 @@ namespace Snake {
                 Snake.pause = !Snake.pause;
             }
 
+            this._thresholdFrameCount = Kouky.Timer.FPS * 0.2;
             if(!Snake.pause) {
-                this._player.transform.position = this._player.transform.position.add(this._movementDirection.clone().scale(this._stepSpeed));
-                console.log(this._player.transform.position.toString());
+                this._frameCount++;
+                if(this._frameCount >= this._thresholdFrameCount) {
+                    console.log(this._player.transform.position.toString());
+                    this._player.transform.position = this._player.transform.position.add(this._movementDirection.clone().scale(this._player.width));
+                    this._frameCount = 0.0;
+                }
             }
         }
         

@@ -3,7 +3,7 @@ namespace Snake {
         private _engine: Kouky.KoukyEngine;
         private _player: PlayerObject;
         private _food: Food;
-        private static _pause: boolean = true;
+        private static _pause: boolean = false;
 
         public constructor(debug: boolean = false) {
             this._engine = new Kouky.KoukyEngine(undefined, "root", debug);
