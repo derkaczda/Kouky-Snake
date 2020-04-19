@@ -14,6 +14,7 @@ namespace Snake {
             this._food.transform.position.copyFrom(new Kouky.Vector3(30, 0, 0));
             Kouky.EnginePipeline.addComponent(this._player);
             Kouky.EnginePipeline.addComponent(this._food);
+            Kouky.EnginePipeline.addComponent(new PlayerController(this._player));
 
             this._engine.start();
             this._engine.fullscreen();
