@@ -10,10 +10,13 @@ namespace Snake {
         public get width(): number { return this._geometry.width; }
         public get height(): number { return this._geometry.height; }
 
-        public start(): void {
-            this._geometry = new SquareGeometry(20, 20);
-            this.transform = new Kouky.Transform();
+        public constructor(size: number) {
+            this._geometry = new SquareGeometry(size, size);
+            this.transform = new Kouky.Transform();//new GridTransform(this._geometry.width);
             this._shader = new FlatColorShader();
+        }
+        public start(): void {
+
         }
         public end(): void {
         }
@@ -22,7 +25,6 @@ namespace Snake {
         public update(time: Kouky.Timestamp): void {
         }
         public render(): void {
-            let context = Kouky.WebGLContext.gl;
             this._shader.source.use();
             this._shader.source.uploadUniform("u_projection", Kouky.EnginePipeline.canvas.projectionMatrix);
             this._shader.source.uploadUniform("u_model", this.transform.getTransformationMatrix());

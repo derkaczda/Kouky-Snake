@@ -32,8 +32,7 @@ namespace Snake {
             if(!Snake.pause) {
                 this._frameCount++;
                 if(this._frameCount >= this._thresholdFrameCount) {
-                    console.log(this._player.transform.position.toString());
-                    this._player.transform.position = this._player.transform.position.add(this._movementDirection.clone().scale(this._player.width));
+                    this._player.transform.position.add(this._movementDirection.clone().scale(this._player.width));
                     this._frameCount = 0.0;
                 }
             }

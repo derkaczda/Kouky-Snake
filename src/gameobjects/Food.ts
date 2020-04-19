@@ -6,9 +6,9 @@ namespace Snake {
         private _geometry: SquareGeometry;
         public transform: Kouky.Transform;
 
-        public constructor() {
+        public constructor(size: number) {
+            this._geometry = new SquareGeometry(size, size);
             this.transform = new Kouky.Transform();
-            this._geometry = new SquareGeometry(20, 20);
             this._shader = new FlatColorShader();
         }
 
@@ -20,8 +20,8 @@ namespace Snake {
         }
         public update(time: Kouky.Timestamp): void {
         }
+
         public render(): void {
-            let context = Kouky.WebGLContext.gl;
             this._shader.source.use();
             this._shader.source.uploadUniform("u_projection", Kouky.EnginePipeline.canvas.projectionMatrix);
             this._shader.source.uploadUniform("u_model", this.transform.getTransformationMatrix());
