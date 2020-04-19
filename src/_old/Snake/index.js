@@ -4,6 +4,7 @@ import Vector3 from '../Kouky/math/Vector3';
 import ModelRenderer from '../Kouky/Render/ModelRenderer';
 import ModelFactory from '../Kouky/Utils/ModelFactory'
 import Player from './GameObjects/player';
+import KoukyEngine from '../Kouky/src/Engine'
 
 export default class Snake extends React.Component
 {
@@ -51,7 +52,7 @@ export default class Snake extends React.Component
 
     render()
     {
-        return (
+        /*return (
         <div>
             <canvas
                 id = "kouky_canvas"
@@ -60,6 +61,10 @@ export default class Snake extends React.Component
                 style = {{border: '1px solid black'}}>
             </canvas>
         </div>
+        );*/
+        this.kouky = new KoukyEngine();
+        return (
+            <div></div>
         );
     }
 }
