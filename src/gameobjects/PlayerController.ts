@@ -22,8 +22,14 @@ namespace Snake {
                 this._movementDirection = Kouky.Vector3.down();  
             }
 
-            this._player.transform.position = this._player.transform.position.add(this._movementDirection.clone().scale(this._stepSpeed));
-            console.log(this._player.transform.position.toString());
+            if(Kouky.Input.isKeyDown(Kouky.Keys.SPACE)) {
+                Snake.pause = !Snake.pause;
+            }
+
+            if(!Snake.pause) {
+                this._player.transform.position = this._player.transform.position.add(this._movementDirection.clone().scale(this._stepSpeed));
+                console.log(this._player.transform.position.toString());
+            }
         }
         
         public start(): void {
