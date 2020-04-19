@@ -1,9 +1,16 @@
 namespace Snake {
+    export interface GridCollider {
+        onCollision(other: GridCollider): void;
+        position: Kouky.Vector3;
+    }
+
     export class Grid implements Kouky.EnginePipelineComponent{
 
         public cellSize: number = 20;
         public gridWidth: number;
         public gridHeight: number;
+
+        private _colliders: GridCollider[] = [];
 
         public constructor(cellSize: number) {
             this.cellSize = cellSize;
@@ -19,10 +26,25 @@ namespace Snake {
         }
 
         public update(time: Kouky.Timestamp): void {
+            this.checkCollision();
         }
 
         public render(): void {
         }
-;
+
+        public addCollider(col: GridCollider):void {
+            this._colliders.push(col);
+        }
+
+        private checkCollision(): void {
+            for(let c of this._colliders) {
+                for(let o of this._colliders) {
+                    if(o !== c && o.position.equals(c.position)) {
+                        c.onCollision(o);
+                    } 
+                }
+            }
+        }
+
     }
 }

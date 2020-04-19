@@ -1,5 +1,5 @@
 namespace Snake {
-    export class PlayerObject implements Kouky.EnginePipelineComponent {
+    export class PlayerObject implements Kouky.EnginePipelineComponent, GridCollider {
 
         private _color: Kouky.Color = Kouky.Color.fromHex("#ffa372");
         private _geometry: SquareGeometry;
@@ -15,6 +15,13 @@ namespace Snake {
             this.transform = new Kouky.Transform();//new GridTransform(this._geometry.width);
             this._shader = new FlatColorShader();
         }
+        public get position(): Kouky.Vector3 { return this.transform.position;}
+
+        
+        public onCollision(other: GridCollider): void {
+            console.log("collision yey");
+        }
+        
         public start(): void {
 
         }
