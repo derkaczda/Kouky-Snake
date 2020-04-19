@@ -26,7 +26,8 @@ namespace Snake {
             this._shader.uploadUniform("u_projection", Kouky.EnginePipeline.canvas.projectionMatrix);
             this._shader.uploadUniform("u_model", this.transform.getTransformationMatrix());
             this._vertexBuffer.bind();
-            this._shader.enableVertexAttribute("a_position",3, 0, 0);
+            this._shader.enableVertexAttribute("a_position",3, 3 * 4 + 4 * 4, 0);
+            this._shader.enableVertexAttribute("a_color",4, 3 * 4 + 4*4, 3*4);
             this._indexBuffer.bind();
             context.drawElements(context.TRIANGLES, 6 , context.UNSIGNED_SHORT, 0);
         }
@@ -34,10 +35,10 @@ namespace Snake {
         private createGeometry(): void {
             const vertexData = new Kouky.VertexBufferData();
             vertexData.addElements([
-                new Kouky.Vertex(new Kouky.Vector3(0.0, 0.0, 0.0)),
-                new Kouky.Vertex(new Kouky.Vector3(0.0, 1.0, 0.0)),
-                new Kouky.Vertex(new Kouky.Vector3(1.0, 0.0, 0.0)),
-                new Kouky.Vertex(new Kouky.Vector3(1.0, 1.0, 0.0))
+                new Kouky.Vertex(new Kouky.Vector3(0.0, 0.0, 0.0), Kouky.Color.fromHex("#ffa372")),
+                new Kouky.Vertex(new Kouky.Vector3(0.0, 1.0, 0.0), Kouky.Color.fromHex("#ffa372")),
+                new Kouky.Vertex(new Kouky.Vector3(1.0, 0.0, 0.0), Kouky.Color.fromHex("#ffa372")),
+                new Kouky.Vertex(new Kouky.Vector3(1.0, 1.0, 0.0), Kouky.Color.fromHex("#ffa372"))
             ]);
             this._vertexBuffer = new Kouky.VertexBuffer();
             this._vertexBuffer.addDataAndLoad(vertexData);
@@ -59,20 +60,26 @@ namespace Snake {
         private createShader(): void {
             const vertexShaderSrc = `
             attribute vec3 a_position;
+            attribute vec4 a_color;
 
             uniform mat4 u_projection;
             uniform mat4 u_model;
             
+            varying vec4 _color;
+
             void main(void)
             {
+                _color = a_color;
                 gl_Position = vec4(a_position, 1.0) * u_model * u_projection;
             }
             `;
             
             const fragmentShaderSrc = `
+            precision mediump float;
+            varying vec4 _color;
             void main(void)
             {
-                gl_FragColor = vec4(0.88, 0.67, 0.07, 1.0);
+                gl_FragColor = _color;
             }
             `;
             

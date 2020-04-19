@@ -17,7 +17,7 @@ namespace Snake {
 
             this._engine.start();
             this._engine.fullscreen();
-            this._engine.display.clearColor = new Kouky.Color(0.27, 0.27, 0.27);
+            this._engine.display.clearColor = Kouky.Color.fromHex("#1b262c");
         }
 
         public loop(): void {
