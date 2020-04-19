@@ -29,7 +29,7 @@ namespace Snake {
             this._shader.uploadUniform("u_model", this.transform.getTransformationMatrix());
             this._shader.uniformVec4("u_color", this._color.toFloatVector4());
             this._vertexBuffer.bind();
-            this._shader.enableVertexAttribute("a_position");
+            this._shader.enableVertexAttribute("a_position", 3, 0, 0);
             this._indexBuffer.bind();
             context.drawElements(context.TRIANGLES, 6 , context.UNSIGNED_SHORT, 0);
         }
@@ -68,7 +68,7 @@ namespace Snake {
            
             void main(void)
             {
-                gl_Position = u_projection * u_model * vec4(a_position, 1.0);
+                gl_Position = vec4(a_position, 1.0) * u_model * u_projection;
             }
             `;
             

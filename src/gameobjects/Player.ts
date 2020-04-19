@@ -12,6 +12,7 @@ namespace Snake {
             this.createShader();
             this.transform = new Kouky.Transform();
             this.transform.scale.copyFrom(new Kouky.Vector3(20.0, 20.0, 20.0));
+            this.transform.position = Kouky.Vector3.zero;
         }
         public end(): void {
         }
@@ -25,7 +26,7 @@ namespace Snake {
             this._shader.uploadUniform("u_projection", Kouky.EnginePipeline.canvas.projectionMatrix);
             this._shader.uploadUniform("u_model", this.transform.getTransformationMatrix());
             this._vertexBuffer.bind();
-            this._shader.enableVertexAttribute("a_position");
+            this._shader.enableVertexAttribute("a_position",3, 0, 0);
             this._indexBuffer.bind();
             context.drawElements(context.TRIANGLES, 6 , context.UNSIGNED_SHORT, 0);
         }
@@ -64,7 +65,7 @@ namespace Snake {
             
             void main(void)
             {
-                gl_Position = u_projection * u_model * vec4(a_position, 1.0);
+                gl_Position = vec4(a_position, 1.0) * u_model * u_projection;
             }
             `;
             

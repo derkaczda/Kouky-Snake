@@ -11,7 +11,7 @@ namespace Snake {
         public start(): void {
             this._player = new PlayerObject();
             this._food = new Food();
-            this._food.transform.position.copyFrom(new Kouky.Vector3(400, 400, 0));
+            this._food.transform.position.copyFrom(new Kouky.Vector3(30, 0, 0));
             Kouky.EnginePipeline.addComponent(this._player);
             Kouky.EnginePipeline.addComponent(this._food);
 
