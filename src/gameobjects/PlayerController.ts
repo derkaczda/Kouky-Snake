@@ -1,7 +1,8 @@
 namespace Snake {
     export class PlayerController implements Kouky.EnginePipelineComponent {
         private _player: PlayerObject;
-        private _stepSpeed: number = 10;
+        private _stepSpeed: number = 5;
+        private _movementDirection: Kouky.Vector3 = Kouky.Vector3.right();
 
         public constructor(player: PlayerObject) {
             this._player = player;
@@ -9,21 +10,20 @@ namespace Snake {
 
         public update(time: Kouky.Timestamp): void {
             if(Kouky.Input.isKeyDown(Kouky.Keys.LEFT)) {
-                this._player.transform.position.x -= this._stepSpeed * time.frameDelta;
-                return;
+                this._movementDirection = Kouky.Vector3.left();  
             }
-            if(Kouky.Input.isKeyDown(Kouky.Keys.RIGHT)) {
-                this._player.transform.position.x += this._stepSpeed * time.frameDelta;
-                return;
+            else if(Kouky.Input.isKeyDown(Kouky.Keys.RIGHT)) {
+                this._movementDirection = Kouky.Vector3.right();  
             }
-            if(Kouky.Input.isKeyDown(Kouky.Keys.UP)) {
-                this._player.transform.position.y += this._stepSpeed * time.frameDelta;
-                return;
+            else if(Kouky.Input.isKeyDown(Kouky.Keys.UP)) {
+                this._movementDirection = Kouky.Vector3.up();  
             }
-            if(Kouky.Input.isKeyDown(Kouky.Keys.DOWN)) {
-                this._player.transform.position.y -= this._stepSpeed * time.frameDelta;
-                return;
+            else if(Kouky.Input.isKeyDown(Kouky.Keys.DOWN)) {
+                this._movementDirection = Kouky.Vector3.down();  
             }
+
+            this._player.transform.position = this._player.transform.position.add(this._movementDirection.clone().scale(this._stepSpeed));
+            console.log(this._player.transform.position.toString());
         }
         
         public start(): void {
