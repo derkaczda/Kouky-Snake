@@ -41,6 +41,7 @@ namespace Snake {
 
         private die(): void {
             this._dead = true;
+            Kouky.EventBus.addEvent(new Kouky.TestEvent(this));
         }
         
     }
