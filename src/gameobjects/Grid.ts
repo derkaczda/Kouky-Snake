@@ -10,7 +10,7 @@ namespace Snake {
         public gridWidth: number;
         public gridHeight: number;
 
-        private _colliders: GridCollider[] = [];
+        private _colliders: any[] = [];
 
         public constructor(cellSize: number) {
             this.cellSize = cellSize;
@@ -32,7 +32,7 @@ namespace Snake {
         public render(): void {
         }
 
-        public addCollider(col: GridCollider):void {
+        public addCollider(col: any):void {
             this._colliders.push(col);
         }
 
@@ -40,7 +40,7 @@ namespace Snake {
             for(let c of this._colliders) {
                 for(let o of this._colliders) {
                     if(o !== c && o.position.equals(c.position)) {
-                        c.onCollision(o);
+                        Kouky.EventSystem.dispatch(new CollisionEvent(this, o, c), true);
                     } 
                 }
             }

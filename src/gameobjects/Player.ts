@@ -1,5 +1,5 @@
 namespace Snake {
-    export class PlayerObject implements Kouky.EnginePipelineComponent, GridCollider {
+    export class PlayerObject implements Kouky.EnginePipelineComponent {
 
         private _color: Kouky.Color = Kouky.Color.fromHex("#ffa372");
         private _geometry: SquareGeometry;
@@ -11,6 +11,7 @@ namespace Snake {
         public get height(): number { return this._geometry.height; }
 
         private testEventId: number;
+        private collisionEventId: number;
 
         public constructor(size: number) {
             this._geometry = new SquareGeometry(size, size);
@@ -20,13 +21,9 @@ namespace Snake {
         }
         public get position(): Kouky.Vector3 { return this.transform.position;}
         
-        
-        public onCollision(other: GridCollider): void {
-            console.log("collision yey");
-        }
-        
         public start(): void {
             this.testEventId = Kouky.EventSystem.addListener(FoodDieEvent.type, this.onTestEvent.bind(this))
+            this.collisionEventId = Kouky.EventSystem.addListener(CollisionEvent.type, this.onCollisionEvent.bind(this));
         }
         public end(): void {
             Kouky.EventSystem.removeListener(this.testEventId);
@@ -45,6 +42,11 @@ namespace Snake {
 
         public onTestEvent(sender: any, args: FoodDieArguments): boolean {
             console.log("food died");
+            return true;
+        }
+
+        private onCollisionEvent(sender: any, args: CollisionEventArguments): boolean {
+            console.log("collision");
             return true;
         }
     }

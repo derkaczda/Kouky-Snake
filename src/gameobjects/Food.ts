@@ -1,5 +1,5 @@
 namespace Snake {
-    export class Food implements Kouky.EnginePipelineComponent, GridCollider {
+    export class Food implements Kouky.EnginePipelineComponent {
         private _shader: FlatColorShader;
         private _color: Kouky.Color = Kouky.Color.fromHex("#ed6663");
         private _colorTwo: Kouky.Color = Kouky.Color.fromHex("#0f4c81");
@@ -33,11 +33,6 @@ namespace Snake {
             this._shader.source.uniformVec4("u_color", this._color.toFloatVector4());
             this._shader.source.uniformVec4("u_color", this._color.toFloatVector4());
             this._geometry.draw(this._shader.source)
-        }
-
-        public onCollision(other: GridCollider): void {
-            if(!this._dead)
-                this.die(); 
         }
 
         private die(): void {
