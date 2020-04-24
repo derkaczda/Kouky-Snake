@@ -36,12 +36,13 @@ namespace Snake {
         }
 
         public onCollision(other: GridCollider): void {
-            this.die();
+            if(!this._dead)
+                this.die(); 
         }
 
         private die(): void {
             this._dead = true;
-            Kouky.EventBus.addEvent(new Kouky.TestEvent(this));
+            Kouky.EventSystem.dispatch(new FoodDieEvent(this));
         }
         
     }

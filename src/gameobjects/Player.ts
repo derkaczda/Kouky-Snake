@@ -1,5 +1,5 @@
 namespace Snake {
-    export class PlayerObject implements Kouky.EnginePipelineComponent, GridCollider, Kouky.EventHandler {
+    export class PlayerObject implements Kouky.EnginePipelineComponent, GridCollider {
 
         private _color: Kouky.Color = Kouky.Color.fromHex("#ffa372");
         private _geometry: SquareGeometry;
@@ -9,6 +9,8 @@ namespace Snake {
 
         public get width(): number { return this._geometry.width; }
         public get height(): number { return this._geometry.height; }
+
+        private testEventId: number;
 
         public constructor(size: number) {
             this._geometry = new SquareGeometry(size, size);
@@ -24,9 +26,10 @@ namespace Snake {
         }
         
         public start(): void {
-            Kouky.EventBus.addHandler(new Kouky.TestEvent(this), this);
+            this.testEventId = Kouky.EventSystem.addListener(FoodDieEvent.type, this.onTestEvent.bind(this))
         }
         public end(): void {
+            Kouky.EventSystem.removeListener(this.testEventId);
         }
         public updateReady(): void {
         }
@@ -40,7 +43,7 @@ namespace Snake {
             this._geometry.draw(this._shader.source);
         }
 
-        public onEvent(event: Kouky.TestEvent): boolean {
+        public onTestEvent(sender: any, args: FoodDieArguments): boolean {
             console.log("food died");
             return true;
         }
