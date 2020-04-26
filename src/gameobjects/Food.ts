@@ -13,6 +13,10 @@ namespace Snake {
                 CollisionEvent.type,
                 this.onCollsion.bind(this)
             );
+            let rand = Math.getRandomInInterval(0, 1);
+            if(rand < 0.5) {
+                this._color = this._colorTwo;
+            }
         }
 
         public get position(): Kouky.Vector3 { return this._geometry.transform.position;}
