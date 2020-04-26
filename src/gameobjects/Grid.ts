@@ -51,6 +51,7 @@ namespace Snake {
                 for(let o of this._colliders) {
                     if(o !== c && o.position.equals(c.position)) {
                         Kouky.EventSystem.dispatch(new CollisionEvent(this, o, c), true);
+                        return;
                     } 
                 }
             }
