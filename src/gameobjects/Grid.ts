@@ -6,20 +6,27 @@ namespace Snake {
 
     export class Grid implements Kouky.EnginePipelineComponent{
 
-        public cellSize: number = 20;
-        public gridWidth: number;
-        public gridHeight: number;
+        private cellSizeConstant: number = 20;
+        private cellSize: number;
+        private gridWidth: number;
+        private gridHeight: number;
 
         private _colliders: any[] = [];
 
         private _playerController: PlayerController;
         private _playerObjet: PlayerObject;
 
-        public constructor(cellSize: number) {
-            this.cellSize = cellSize;
+        public constructor() {
+        }
+        
+        public resize(): void {
+            this.gridWidth = Kouky.EnginePipeline.canvas.width;
+            this.gridHeight = Kouky.EnginePipeline.canvas.height;
+            this.cellSize = this.cellSizeConstant * (this.gridWidth/this.gridWidth);
         }
         
         public start(): void {
+            this.resize();
             Kouky.EventSystem.addListener(
                 FoodDieEvent.type,
                 this.foodDiedEvent.bind(this)

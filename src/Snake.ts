@@ -14,9 +14,7 @@ namespace Snake {
         public static set pause(value: boolean) { Snake._pause = value; }
 
         public start(): void {
-            this._grid = new Grid(20);
-            this._grid.gridWidth = this._engine.display.width;
-            this._grid.gridHeight = this._engine.display.height;
+            this._grid = new Grid();
             // this._player = new PlayerObject(this._grid.cellSize);
             // this._food = new Food(this._grid.cellSize);
             // this._food.transform.position.copyFrom(new Kouky.Vector3(2 * 20, 3 * 20, 0));
