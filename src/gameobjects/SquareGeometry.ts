@@ -46,7 +46,6 @@ namespace Snake {
         }
 
         public draw(shader: Kouky.Shader): void  {
-            console.log("draw");
             this._vertexBuffer.bind();
             this._indexBuffer.bind();
             shader.enableVertexAttribute("a_position",3,0, 0);

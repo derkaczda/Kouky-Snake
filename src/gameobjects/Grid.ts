@@ -97,7 +97,6 @@ namespace Snake {
 
         private spawnNewFood(): void {
             let pos = this.getRandomPositionOnGrid();
-            console.log(`spawning new food at position ${pos.toString()}`);
             let food = new Food(this.cellSize);
             food.position.copyFrom(pos);
             this._foods.push(food);
@@ -108,7 +107,6 @@ namespace Snake {
             this._player.position.copyFrom(
                 this.getRandomPositionOnGrid()
             );
-            console.log(`${this._player.position.toString()}`);
         }
 
         private getRandomPositionOnGrid(): Kouky.Vector3 {
