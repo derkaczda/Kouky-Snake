@@ -7,6 +7,8 @@ namespace Snake {
         public transform: Kouky.Transform;
         private _dead: boolean = false;
 
+        private collisionEventId: number;
+
         public constructor(size: number) {
             this._geometry = new SquareGeometry(size, size);
             this.transform = new Kouky.Transform();
@@ -16,6 +18,10 @@ namespace Snake {
         public get position(): Kouky.Vector3 { return this.transform.position;}
 
         public start(): void {
+            this.collisionEventId = Kouky.EventSystem.addListener(
+                CollisionEvent.type,
+                this.onCollsion.bind(this)
+            );
         }
         public end(): void {
         }
@@ -36,9 +42,16 @@ namespace Snake {
         }
 
         private die(): void {
-            this._dead = true;
-            Kouky.EventSystem.dispatch(new FoodDieEvent(this));
+            if(!this._dead) {
+                this._dead = true;
+                Kouky.EventSystem.dispatch(new FoodDieEvent(this));
+                Kouky.EventSystem.removeListener(this.collisionEventId);
+            }
         }
         
+        private onCollsion(sender: any, arg: CollisionEventArguments): boolean {
+            this.die();
+            return false;
+        }
     }
 }

@@ -22,7 +22,6 @@ namespace Snake {
         public get position(): Kouky.Vector3 { return this.transform.position;}
         
         public start(): void {
-            this.testEventId = Kouky.EventSystem.addListener(FoodDieEvent.type, this.onTestEvent.bind(this))
             this.collisionEventId = Kouky.EventSystem.addListener(CollisionEvent.type, this.onCollisionEvent.bind(this));
         }
         public end(): void {
@@ -40,14 +39,8 @@ namespace Snake {
             this._geometry.draw(this._shader.source);
         }
 
-        public onTestEvent(sender: any, args: FoodDieArguments): boolean {
-            console.log("food died");
-            return true;
-        }
-
         private onCollisionEvent(sender: any, args: CollisionEventArguments): boolean {
-            console.log("collision");
-            return true;
+            return false;
         }
     }
 }

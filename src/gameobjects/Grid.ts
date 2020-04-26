@@ -12,11 +12,21 @@ namespace Snake {
 
         private _colliders: any[] = [];
 
+        private _playerController: PlayerController;
+        private _playerObjet: PlayerObject;
+
         public constructor(cellSize: number) {
             this.cellSize = cellSize;
         }
         
         public start(): void {
+            Kouky.EventSystem.addListener(
+                FoodDieEvent.type,
+                this.foodDiedEvent.bind(this)
+            );
+
+            this.spawnPlayer();
+            this.spawnNewFood();
         }
 
         public end(): void {
@@ -44,6 +54,44 @@ namespace Snake {
                     } 
                 }
             }
+        }
+
+        private foodDiedEvent(sender: any, args: FoodDieArguments): boolean {
+            for(let i = this._colliders.length; i >= 0; i--) {
+                if(this._colliders[i] === sender) {
+                    delete this._colliders[i];
+                    this._colliders.splice(i, 1);
+                    break;
+                }
+            }
+            this.spawnNewFood();
+            return true;
+        }
+
+        private spawnNewFood(): void {
+            let pos = this.getRandomPositionOnGrid();
+            console.log(`spawning new food at position ${pos.toString()}`);
+            let food = new Food(this.cellSize);
+            food.transform.position.copyFrom(pos);
+            this.addCollider(food);
+            Kouky.EnginePipeline.addComponent(food);
+        }
+
+        private spawnPlayer(): void {
+            this._playerObjet = new PlayerObject(this.cellSize);
+            this._playerController = new PlayerController(this._playerObjet);
+            this._playerObjet.transform.position.copyFrom(
+                this.getRandomPositionOnGrid()
+            );
+            this.addCollider(this._playerObjet);
+            Kouky.EnginePipeline.addComponent(this._playerController);
+            Kouky.EnginePipeline.addComponent(this._playerObjet);
+        }
+
+        private getRandomPositionOnGrid(): Kouky.Vector3 {
+            let x = Math.getRandomInInterval(-(this.gridWidth/2.0)/ this.cellSize, (this.gridWidth/ 2.0)/ this.cellSize);
+            let y = Math.getRandomInInterval(-(this.gridHeight/2.0)/this.cellSize, (this.gridHeight/2.0)/ this.cellSize);
+            return new Kouky.Vector3(Math.floor(x) * this.cellSize, Math.floor(y) * this.cellSize, 0);
         }
 
     }
