@@ -42,9 +42,13 @@ namespace Snake {
             }
 
             
+            let headprev = this.head.transform.position;
             this.head.transform.position.add(this._movementDirection.clone().scale(this.size));
-            for(let t of this.tail) {
-                t.transform.position.add(this._movementDirection.clone().scale(this.size));
+            if(this.tail.length === 0)
+                return;
+            for(let i = this.tail.length - 1; i >= 0; i--) {
+                let newPos: Kouky.Vector3 = i === 0 ? headprev : this.tail[i-1].transform.position;
+                this.tail[i].transform.position.copyFrom(newPos);
             }
             
         }
