@@ -11,10 +11,14 @@ namespace Snake {
         private gridWidth: number;
         private gridHeight: number;
 
-        private _colliders: any[] = [];
+        private _player: Player;
 
-        private _playerController: PlayerController;
-        private _playerObjet: PlayerObject;
+        private _foods: Food[] = [];
+
+        private _shader: FlatColorShader;
+
+        private _frameCount: number = 0;
+        private _thresholdFrameCount: number;
 
         public constructor() {
         }
@@ -32,6 +36,8 @@ namespace Snake {
                 this.foodDiedEvent.bind(this)
             );
 
+            this._shader = new FlatColorShader();
+
             this.spawnPlayer();
             this.spawnNewFood();
         }
@@ -43,32 +49,45 @@ namespace Snake {
         }
 
         public update(time: Kouky.Timestamp): void {
-            this.checkCollision();
-        }
-
-        public render(): void {
-        }
-
-        public addCollider(col: any):void {
-            this._colliders.push(col);
-        }
-
-        private checkCollision(): void {
-            for(let c of this._colliders) {
-                for(let o of this._colliders) {
-                    if(o !== c && o.position.equals(c.position)) {
-                        Kouky.EventSystem.dispatch(new CollisionEvent(this, o, c), true);
-                        return;
-                    } 
+            this._thresholdFrameCount = Kouky.Timer.FPS * 0.2;
+            if(!Snake.pause) {
+                this._frameCount++;
+                if(this._frameCount >= this._thresholdFrameCount) {
+                    this._player.update(time);
+                    for(let f of this._foods) {
+                        f.update(time);
+                    }
+                    this.checkCollision();
+                    this._frameCount = 0.0;
                 }
             }
         }
 
+        public render(): void {
+            this._shader.source.use();
+            this._shader.source.uploadUniform("u_projection", Kouky.EnginePipeline.canvas.projectionMatrix);
+            
+            this._player.render(this._shader.source);
+
+            for(let f of this._foods) {
+                f.render(this._shader.source);
+            }
+        }
+
+        private checkCollision(): void {
+            for(let f of this._foods) {
+                if(f.position.equals(this._player.position)) {
+                    Kouky.EventSystem.dispatch(new CollisionEvent(this, f, this._player), true);
+                    return;
+                }         
+            }
+        }
+
         private foodDiedEvent(sender: any, args: FoodDieArguments): boolean {
-            for(let i = this._colliders.length; i >= 0; i--) {
-                if(this._colliders[i] === sender) {
-                    delete this._colliders[i];
-                    this._colliders.splice(i, 1);
+            for(let i = this._foods.length; i >= 0; i--) {
+                if(this._foods[i] === sender) {
+                    delete this._foods[i];
+                    this._foods.splice(i, 1);
                     break;
                 }
             }
@@ -80,20 +99,16 @@ namespace Snake {
             let pos = this.getRandomPositionOnGrid();
             console.log(`spawning new food at position ${pos.toString()}`);
             let food = new Food(this.cellSize);
-            food.transform.position.copyFrom(pos);
-            this.addCollider(food);
-            Kouky.EnginePipeline.addComponent(food);
+            food.position.copyFrom(pos);
+            this._foods.push(food);
         }
 
         private spawnPlayer(): void {
-            this._playerObjet = new PlayerObject(this.cellSize);
-            this._playerController = new PlayerController(this._playerObjet);
-            this._playerObjet.transform.position.copyFrom(
+            this._player = new Player(this.cellSize);
+            this._player.position.copyFrom(
                 this.getRandomPositionOnGrid()
             );
-            this.addCollider(this._playerObjet);
-            Kouky.EnginePipeline.addComponent(this._playerController);
-            Kouky.EnginePipeline.addComponent(this._playerObjet);
+            console.log(`${this._player.position.toString()}`);
         }
 
         private getRandomPositionOnGrid(): Kouky.Vector3 {

@@ -5,9 +5,15 @@ namespace Snake {
         private _vertexBuffer: Kouky.VertexBuffer;
         private _indexBuffer: Kouky.IndexBuffer;
 
-        public constructor(width: number, height: number) {
-            this._width = width;
-            this._height = height;
+        private static _instance: SquareGeometry;
+        
+        public static get instance(): SquareGeometry {
+            if(SquareGeometry._instance === undefined)
+                SquareGeometry._instance = new SquareGeometry();
+            return SquareGeometry._instance;
+        }
+
+        public constructor() {
             this.init();
         }
 
@@ -18,9 +24,9 @@ namespace Snake {
             const vertexData = new Kouky.VertexBufferData();
             vertexData.addElements([
                 new Kouky.Vertex(new Kouky.Vector3(0.0, 0.0, 0.0)),
-                new Kouky.Vertex(new Kouky.Vector3(0.0, this._height, 0.0)),
-                new Kouky.Vertex(new Kouky.Vector3(this._width, 0.0, 0.0)),
-                new Kouky.Vertex(new Kouky.Vector3(this._width, this._height, 0.0))
+                new Kouky.Vertex(new Kouky.Vector3(0.0, 1.0, 0.0)),
+                new Kouky.Vertex(new Kouky.Vector3(1.0, 0.0, 0.0)),
+                new Kouky.Vertex(new Kouky.Vector3(1.0, 1.0, 0.0))
             ]);
             this._vertexBuffer = new Kouky.VertexBuffer();
             this._vertexBuffer.addDataAndLoad(vertexData);
@@ -40,6 +46,7 @@ namespace Snake {
         }
 
         public draw(shader: Kouky.Shader): void  {
+            console.log("draw");
             this._vertexBuffer.bind();
             this._indexBuffer.bind();
             shader.enableVertexAttribute("a_position",3,0, 0);
