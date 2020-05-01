@@ -13,6 +13,8 @@ namespace Snake {
 
         private _movementDirection: Kouky.Vector3 = Kouky.Vector3.right();
 
+        private appendNewElement = false;
+
         public constructor(size: number) {
             this.size = size;
             this.head = new Square(size);
@@ -42,8 +44,12 @@ namespace Snake {
             }
 
             
-            let headprev = this.head.transform.position;
+            let headprev = this.head.transform.position.clone();
             this.head.transform.position.add(this._movementDirection.clone().scale(this.size));
+            if(this.appendNewElement) {
+                this.appendNewElement = false;
+                this.appendToTail();
+            }
             if(this.tail.length === 0)
                 return;
             for(let i = this.tail.length - 1; i >= 0; i--) {
@@ -62,7 +68,7 @@ namespace Snake {
         }
 
         private onCollisionEvent(sender: any, args: CollisionEventArguments): boolean {
-            this.appendToTail();
+            this.appendNewElement = true;
             return false;
         }
 
