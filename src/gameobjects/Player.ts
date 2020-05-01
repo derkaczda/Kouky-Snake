@@ -26,12 +26,10 @@ namespace Snake {
 
         public end(): void {
             Kouky.EventSystem.removeListener(this.collisionEventId);
+            Kouky.EventSystem.removeListener(this.keyEventId);
         }
 
         public update(time: Kouky.Timestamp): void {
-            
-
-            
             let headprev = this.head.transform.position.clone();
             this.head.transform.position.add(this._movementDirection.clone().scale(this.size));
             if(this.appendNewElement) {
