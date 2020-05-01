@@ -7,6 +7,8 @@ namespace Snake {
         private tail: Square[] = [];
 
         private collisionEventId: number;
+        private keyEventId: number;
+
         private size: number;
 
         public get position(): Kouky.Vector3 { return this.head.transform.position;}
@@ -19,6 +21,7 @@ namespace Snake {
             this.size = size;
             this.head = new Square(size);
             this.collisionEventId = Kouky.EventSystem.addListener(CollisionEvent.type, this.onCollisionEvent.bind(this));
+            this.keyEventId = Kouky.EventSystem.addListener(Kouky.KeyDownEvent.type, this.onKeyDownEvent.bind(this));
         }
 
         public end(): void {
@@ -26,22 +29,7 @@ namespace Snake {
         }
 
         public update(time: Kouky.Timestamp): void {
-            if(Kouky.Input.isKeyDown(Kouky.Keys.LEFT)) {
-                this._movementDirection = Kouky.Vector3.left();  
-            }
-            else if(Kouky.Input.isKeyDown(Kouky.Keys.RIGHT)) {
-                this._movementDirection = Kouky.Vector3.right();  
-            }
-            else if(Kouky.Input.isKeyDown(Kouky.Keys.UP)) {
-                this._movementDirection = Kouky.Vector3.up();  
-            }
-            else if(Kouky.Input.isKeyDown(Kouky.Keys.DOWN)) {
-                this._movementDirection = Kouky.Vector3.down();  
-            }
-
-            if(Kouky.Input.isKeyDown(Kouky.Keys.SPACE)) {
-                Snake.pause = !Snake.pause;
-            }
+            
 
             
             let headprev = this.head.transform.position.clone();
@@ -70,6 +58,25 @@ namespace Snake {
         private onCollisionEvent(sender: any, args: CollisionEventArguments): boolean {
             this.appendNewElement = true;
             return false;
+        }
+
+        private onKeyDownEvent(sender: any, args: Kouky.KeyEventArguments): boolean {
+            if(args.key === Kouky.Keys.LEFT) {
+                this._movementDirection = Kouky.Vector3.left();  
+            }
+            else if(args.key === Kouky.Keys.RIGHT) {
+                this._movementDirection = Kouky.Vector3.right();  
+            }
+            else if(args.key === Kouky.Keys.UP) {
+                this._movementDirection = Kouky.Vector3.up();  
+            }
+            else if(args.key === Kouky.Keys.DOWN) {
+                this._movementDirection = Kouky.Vector3.down();  
+            }
+            if(args.key === Kouky.Keys.SPACE) {
+                Snake.pause = !Snake.pause;
+            }
+            return true;
         }
 
         private appendToTail(): void {
