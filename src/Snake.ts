@@ -18,6 +18,9 @@ namespace Snake {
             this._engine.start();
             this._engine.fullscreen();
             this._engine.display.clearColor = Kouky.Color.fromHex("#1b262c");
+
+            Kouky.EventSystem.addListener(Kouky.AssetLoadEvent.type, this.audioLoaded.bind(this));
+            Kouky.AssetManager.loadAsset("assets/sounds/sound.mp3");
         }
 
         public loop(): void {
@@ -26,6 +29,11 @@ namespace Snake {
 
         public resize(): void {
             this._engine.resize();
+        }
+
+        private audioLoaded(sender: any, args: Kouky.AssetLoadEventArguments) {
+            console.log("asset loaded");
+            //(args.asset as Kouky.AudioAsset).play();
         }
     }
 }

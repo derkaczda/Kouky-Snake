@@ -55,6 +55,7 @@ namespace Snake {
 
         private onCollisionEvent(sender: any, args: CollisionEventArguments): boolean {
             this.appendNewElement = true;
+            (Kouky.AssetManager.getAsset("assets/sounds/sound.mp3") as Kouky.AudioAsset).play();
             return false;
         }
 
